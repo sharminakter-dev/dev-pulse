@@ -8,4 +8,6 @@ export const config = {
     port: env.PORT,
     connectionString:env.COONECTION_STRING,
     node_env: env.NODE_ENV,
+    secret: env.SECRET,
+    refresh_secret: env.REFRESH_SECRET
 }
