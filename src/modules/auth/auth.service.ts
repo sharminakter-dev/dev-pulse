@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { User } from "../../types";
+import type { IUser } from "./auth.Interface";
 import { pool } from "../../db";
 import bcrypt from "bcrypt";
 import { AppError } from "../../utils/AppError";
@@ -7,7 +7,8 @@ import jwt from "jsonwebtoken";
 import { config } from "../../config";
 
 
-const createUserIntoDB = async(payload: User)=>{
+//* create new user
+const createUserIntoDB = async(payload: IUser)=>{
     const {name, email, password, role} = payload;
     console.log(password);
     const hashPassword = await bcrypt.hash(password, 1);
@@ -19,10 +20,15 @@ const createUserIntoDB = async(payload: User)=>{
        RETURNING *;
     `, [name, email, hashPassword, role]);
 
-    const {password:pass, ...safeUser} = result.rows[0]
+    if(result.rowCount === 0 ){
+        throw new AppError("Failed to create user", 400);
+    }
+    
+    const {password:pass, ...safeUser} = result.rows[0];
     return safeUser;
 }
 
+// *login
 const loginUserFromDB = async(payload: {
     email: string; 
     password: string
@@ -45,27 +51,25 @@ const loginUserFromDB = async(payload: {
 
     const {password:pass, ...safeUser} = result.rows[0];
 
-    const jwtPayload = {
-        id: safeUser.id,
-        name: safeUser.name,
-        role: safeUser.role,
+    return safeUser;
+}
+
+const getUserById = async(id: string)=>{
+    const result = await pool.query(`
+        SELECT id, name, email, role, created_at, updated_at 
+        FROM users
+        WHERE id = $1
+    `, [id]);
+    
+    if(result.rowCount === 0){
+        throw new AppError("user not found", 404);
     }
 
-    const token = jwt.sign(jwtPayload, config.secret as string ,{
-        expiresIn:'10h'
-    });
-
-    const refreshToken = jwt.sign(jwtPayload, config.refresh_secret as string, {
-        expiresIn:'10d'
-
-    })
-
-
-    return {token:token, user:safeUser, refreshToken:refreshToken};
-
+    return result.rows[0];
 }
 
 export const authService = {
     createUserIntoDB,
     loginUserFromDB,
+    getUserById
 }

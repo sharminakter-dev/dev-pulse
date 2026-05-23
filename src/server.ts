@@ -13,8 +13,9 @@ const main = async()=>{
     })
 }
 
-//todo -> logger function
+
 //todo -> node_env -> production
 //todo -> cookie settings in authController ->true in production
+
 
 main();
