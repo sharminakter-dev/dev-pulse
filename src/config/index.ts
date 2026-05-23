@@ -6,7 +6,7 @@ configDotenv({path: path.resolve(process.cwd(), ".env"), quiet: true});
 
 export const config = {
     port: env.PORT,
-    connectionString:env.COONECTION_STRING,
+    connectionString:env.CONNECTION_STRING,
     node_env: env.NODE_ENV,
     secret: env.SECRET,
     refresh_secret: env.REFRESH_SECRET
