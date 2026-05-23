@@ -1,6 +1,4 @@
 
-// for user
-
 export const USER_ROLE = {
     contributor:"contributor", 
     maintainer: "maintainer"
@@ -18,4 +16,4 @@ export interface IUser{
     updated_at: Date
 }
 
-export type RUser = Omit<IUser, "password">;
+export type RUser = Omit<IUser, "id"| "password">;

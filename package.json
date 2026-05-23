@@ -7,7 +7,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": "Node dist/server.js",
     "dev": "tsx watch ./src/server",
+    "build": "tsup",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -28,6 +30,7 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
-    "pg": "^8.21.0"
+    "pg": "^8.21.0",
+    "tsup": "^8.5.1"
   }
 }

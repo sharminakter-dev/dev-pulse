@@ -19,7 +19,7 @@ export const verifyToken = (token: string, type: "access" | "refresh")=>{
 }
 
 
-export const loginToken = (user: RUser)=>{
+export const loginToken = (user: RUser & {id:string})=>{
         
         const jwtPayload = {
             id: user.id,

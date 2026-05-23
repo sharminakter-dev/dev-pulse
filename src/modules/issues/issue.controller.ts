@@ -28,6 +28,7 @@ const getUserById = asyncHandler(async(req: Request, res: Response)=>{
 
 const updateIssueById = asyncHandler(async(req: Request, res: Response)=>{
     const {id} = req.params;
+
     const updatedIssue = await issueService.updateIssueIntoDB(req.body, id as string);
     return sendResponse(res, {
         statusCode:200, 
@@ -40,7 +41,7 @@ const updateIssueById = asyncHandler(async(req: Request, res: Response)=>{
 const deleteIssueById = asyncHandler(async(req: Request, res: Response)=>{
     const id = req.params.id;
 
-    await issueService.deleteIssueFromDB(id);
+    await issueService.deleteIssueFromDB(id as string);
 
     return sendResponse(res, {statusCode:200, success:true, message: "Issue deleted successfully"});
 });
